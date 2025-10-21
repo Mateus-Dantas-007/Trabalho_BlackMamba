@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             link.addEventListener('click', function() {
                 sessionStorage.setItem('cpfClienteParaServico', cliente.cpf);
-                // Limpa a flag de 'modo' para garantir que é modo de visualização/novo
                 sessionStorage.removeItem('modoServico'); 
             });
 
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </svg>
                         </button>
                         
-                        <button class="action-btn paper-bnt">
+                        <button class="action-btn paper-bnt" data-cpf="${cliente.cpf}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
                                 <g clip-path="url(#clip0_22_172)">
                                     <path d="M20 16L15 21L16.4 22.45L19 19.85V28H21V19.85L23.6 22.45L25 21L20 16ZM14 12C13.45 12 12.9792 12.1958 12.5875 12.5875C12.1958 12.9792 12 13.45 12 14V17H14V14H26V17H28V14C28 13.45 27.8042 12.9792 27.4125 12.5875C27.0208 12.1958 26.55 12 26 12H14Z" fill="#49454F"/>
@@ -58,7 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         adicionarLogicaDeExclusao();
-        adicionarLogicaDeEdicao(); // <-- NOVA FUNÇÃO CHAMADA
+        adicionarLogicaDeEdicao();
+        adicionarLogicaDeExportacao(); // <-- NOVA FUNÇÃO CHAMADA
 
     } else {
         userListContainer.innerHTML = '<p style="color: black; text-align: center;">Nenhum cliente cadastrado ainda.</p>';
@@ -67,24 +67,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function adicionarLogicaDeExclusao() {
-    
     const deleteButtons = document.querySelectorAll('.delete-btn');
-
     deleteButtons.forEach(button => {
-        
         button.addEventListener('click', function(event) {
-            
             event.preventDefault(); 
             event.stopPropagation(); 
-
             const confirmou = confirm('Tem certeza que deseja excluir este cliente?');
-
             if (confirmou) {
-                
                 const cpfParaDeletar = event.currentTarget.dataset.cpf;
                 let clientesAtuais = JSON.parse(localStorage.getItem('clientes')) || [];
                 let novosClientes = clientesAtuais.filter(cliente => cliente.cpf !== cpfParaDeletar);
-                
                 localStorage.setItem('clientes', JSON.stringify(novosClientes));
                 window.location.reload();
             }
@@ -92,30 +84,91 @@ function adicionarLogicaDeExclusao() {
     });
 }
 
-// --- FUNÇÃO NOVA ---
 function adicionarLogicaDeEdicao() {
-
-    // 1. Seleciona TODOS os botões de editar
     const editButtons = document.querySelectorAll('.edit-btn');
-
-    // 2. Adiciona um "ouvinte" para CADA botão
     editButtons.forEach(button => {
-
         button.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const cpfParaEditar = event.currentTarget.dataset.cpf;
+            sessionStorage.setItem('cpfClienteParaServico', cpfParaEditar);
+            sessionStorage.setItem('modoServico', 'editar'); 
+            window.location.href = 'servico.html';
+        });
+    });
+}
 
+// --- FUNÇÃO NOVA ---
+function adicionarLogicaDeExportacao() {
+    // 1. Pega a biblioteca que carregamos no HTML
+    const { jsPDF } = window.jspdf;
+    
+    // 2. Seleciona todos os botões de exportar
+    const exportButtons = document.querySelectorAll('.paper-bnt');
+
+    exportButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
             // 3. Impede a navegação e a "borbulha"
             event.preventDefault();
             event.stopPropagation();
 
             // 4. Pega o CPF do botão
-            const cpfParaEditar = event.currentTarget.dataset.cpf;
+            const cpfParaExportar = event.currentTarget.dataset.cpf;
             
-            // 5. Salva o CPF e o MODO na sessão
-            sessionStorage.setItem('cpfClienteParaServico', cpfParaEditar);
-            sessionStorage.setItem('modoServico', 'editar'); // <-- A FLAG!
+            // 5. Pega os dados do localStorage
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const cliente = clientes.find(c => c.cpf === cpfParaExportar);
 
-            // 6. Navega para a página de serviço
-            window.location.href = 'servico.html';
+            // 6. VERIFICA SE EXISTE SERVIÇO
+            if (!cliente) {
+                alert('Erro: Cliente não encontrado.');
+                return;
+            }
+
+            if (!cliente.servico) {
+                alert('Este cliente ainda não possui um serviço cadastrado para exportar.');
+                return;
+            }
+
+            // 7. GERA O PDF
+            try {
+                const doc = new jsPDF();
+                
+                // Formata os dados
+                const valorFormatado = parseFloat(cliente.servico.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                const dataFormatada = new Date(cliente.servico.data_conclusao + 'T00:00:00').toLocaleDateString('pt-BR');
+
+                // Adiciona o conteúdo
+                doc.setFontSize(18);
+                doc.text("Relatório de Serviço", 10, 20);
+
+                doc.setFontSize(12);
+                doc.text(`Cliente: ${cliente.nome}`, 10, 35);
+                doc.text(`CPF: ${cliente.cpf}`, 10, 42);
+                doc.text(`Veículo: ${cliente.modelo}`, 10, 49); // <-- Pega o modelo salvo no cadastro
+
+                doc.setFontSize(14);
+                doc.text("Detalhes do Serviço", 10, 65);
+                doc.setFontSize(12);
+                
+                // Quebra a descrição em várias linhas se for longa
+                const linhasDescricao = doc.splitTextToSize(cliente.servico.descricao, 180);
+                doc.text(linhasDescricao, 10, 75);
+
+                // Calcula onde a próxima linha deve começar
+                let yOffset = 75 + (linhasDescricao.length * 7);
+
+                doc.text(`Valor: ${valorFormatado}`, 10, yOffset + 5);
+                doc.text(`Status: ${cliente.servico.status}`, 10, yOffset + 12);
+                doc.text(`Data Prevista: ${dataFormatada}`, 10, yOffset + 19);
+
+                // 8. Salva o arquivo
+                doc.save(`servico-${cliente.cpf}.pdf`);
+
+            } catch (error) {
+                console.error('Erro ao gerar PDF:', error);
+                alert('Ocorreu um erro ao gerar o PDF.');
+            }
         });
     });
 }
