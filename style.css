@@ -21,7 +21,11 @@ body {
     min-height: 100vh;
     padding-top: 50px; /* Espaçamento do topo */
 }
-
+#imgLogo {
+    height: 1500px;
+    width: 2000px;
+    margin-top: 1000px;
+}
 .container {
     width: 100%;
     max-width: 600px; /* Largura base do layout (ajustável) */

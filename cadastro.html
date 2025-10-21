@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="cadastro.css">
 </head>
 <body>
+    <div id="logo-oficina"><img src="./Logo_OficinaBoaDaPorr.png" alt=""></div>
     <div class="overlay">
         <div class="modal-card">
             <header class="modal-header">
@@ -23,26 +24,28 @@
                 </button>
             </header>
 
-            <form class="client-form">
+            <form class="client-form" id="client-form">
 
                 <div class="form-group">
                     <label for="nome" class="label">Nome:</label>
-                    <input type="text" id="nome" name="nome" class="input-field" placeholder="Digite seu nome">
+                    <input type="text" id="nome" name="nome" class="input-field" placeholder="Digite seu nome" required>
                 </div>
 
                 <div class="form-group">
                     <label for="cpf" class="label">CPF:</label>
-                    <input type="text" id="cpf" name="cpf" class="input-field" placeholder="Digite CPF">
+                    <input type="text" id="cpf" name="cpf" class="input-field" placeholder="Digite CPF" required>
                 </div>
 
                 <div class="form-group">
                     <label for="modelo" class="label">Modelo do veículo:</label>
-                    <input type="text" id="modelo" name="modelo" class="input-field" placeholder="Digite modelo do veículo">
+                    <input type="text" id="modelo" name="modelo" class="input-field" placeholder="Digite modelo do veículo" required>
                 </div>
 
                 <button type="submit" class="submit-btn">Concluir</button>
             </form>
         </div>
     </div>
+
+    <script src="cadastro.js" defer></script>
 </body>
 </html>

@@ -9,114 +9,16 @@
 <body>
     <div class="container">
         <header class="header">
-            <span class="logo-text">LOGO</span>
+            <span class="logo-text"><img src="./LogoRattusBar.jpg" id="imgLogo"></span>
         </header>
 
         <button class="new-registration-btn" onclick="window.location.href='cadastro.html'">Novo Cadastro</button>
 
-        <a href="servico.html">
-            <div class="user-list">
-                <div class="user-card">
-                    <div class="user-info">
-                        <span class="user-name">Erikola Renan Kiwidi da Madeira</span>
-                        <span class="user-id">199.999.999-99</span>
-                    </div>
-                    <div class="user-actions">
-                        <button class="action-btn edit-btn" aria-label="Editar">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                            </svg>
-                        </button>
-                        <button class="action-btn delete-btn" aria-label="Excluir">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                        </button>
-                        <button class="action-btn paper-bnt">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <g clip-path="url(#clip0_22_172)">
-                                    <path d="M20 16L15 21L16.4 22.45L19 19.85V28H21V19.85L23.6 22.45L25 21L20 16ZM14 12C13.45 12 12.9792 12.1958 12.5875 12.5875C12.1958 12.9792 12 13.45 12 14V17H14V14H26V17H28V14C28 13.45 27.8042 12.9792 27.4125 12.5875C27.0208 12.1958 26.55 12 26 12H14Z" fill="#49454F"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_22_172">
-                                        <rect width="40" height="40" rx="20" transform="matrix(1 0 0 -1 0 40)" fill="white"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="servico.html">
-                <div class="user-card">
-                    <div class="user-info">
-                        <span class="user-name">Erikola Renan Kiwidi da Madeira</span>
-                        <span class="user-id">199.999.999-99</span>
-                    </div>
-                    <div class="user-actions">
-                        <button class="action-btn edit-btn" aria-label="Editar">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                            </svg>
-                        </button>
-                        <button class="action-btn delete-btn" aria-label="Excluir">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                        </button>
-                        <button class="action-btn paper-bnt">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <g clip-path="url(#clip0_22_172)">
-                                    <path d="M20 16L15 21L16.4 22.45L19 19.85V28H21V19.85L23.6 22.45L25 21L20 16ZM14 12C13.45 12 12.9792 12.1958 12.5875 12.5875C12.1958 12.9792 12 13.45 12 14V17H14V14H26V17H28V14C28 13.45 27.8042 12.9792 27.4125 12.5875C27.0208 12.1958 26.55 12 26 12H14Z" fill="#49454F"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_22_172">
-                                        <rect width="40" height="40" rx="20" transform="matrix(1 0 0 -1 0 40)" fill="white"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </a>
+        <div class="user-list" id="user-list-container">
+            </div>
 
-            <a href="servico.html">
-                <div class="user-card">
-                    <div class="user-info">
-                        <span class="user-name">Erikola Renan Kiwidi da Madeira</span>
-                        <span class="user-id">199.999.999-99</span>
-                    </div>
-                    <div class="user-actions">
-                        <button class="action-btn edit-btn" aria-label="Editar">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                            </svg>
-                        </button>
-                        <button class="action-btn delete-btn" aria-label="Excluir">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                        </button>
-                        <button class="action-btn paper-bnt">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <g clip-path="url(#clip0_22_172)">
-                                    <path d="M20 16L15 21L16.4 22.45L19 19.85V28H21V19.85L23.6 22.45L25 21L20 16ZM14 12C13.45 12 12.9792 12.1958 12.5875 12.5875C12.1958 12.9792 12 13.45 12 14V17H14V14H26V17H28V14C28 13.45 27.8042 12.9792 27.4125 12.5875C27.0208 12.1958 26.55 12 26 12H14Z" fill="#49454F"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_22_172">
-                                        <rect width="40" height="40" rx="20" transform="matrix(1 0 0 -1 0 40)" fill="white"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </a>
-        </div>
     </div>
+
+    <script src="index.js" defer></script>
 </body>
 </html>
