@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const link = document.createElement('a');
             link.href = 'servico.html'; 
+            
+            // NOVO: Adiciona um 'ouvinte' ao link
+            link.addEventListener('click', function() {
+                // Salva o CPF deste cliente na sessão para a próxima página saber
+                sessionStorage.setItem('cpfClienteParaServico', cliente.cpf);
+            });
 
             link.innerHTML = `
                 <div class="user-card">
@@ -75,13 +81,10 @@ function adicionarLogicaDeExclusao() {
             if (confirmou) {
                 
                 const cpfParaDeletar = event.currentTarget.dataset.cpf;
-                
                 let clientesAtuais = JSON.parse(localStorage.getItem('clientes')) || [];
-                
                 let novosClientes = clientesAtuais.filter(cliente => cliente.cpf !== cpfParaDeletar);
                 
                 localStorage.setItem('clientes', JSON.stringify(novosClientes));
-                
                 window.location.reload();
             }
         });

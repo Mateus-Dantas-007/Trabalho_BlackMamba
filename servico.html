@@ -11,10 +11,10 @@
         <div class="modal-card">
             <header class="modal-header">
                 <div class="header-text">
-                    <span class="subtitle">Adicionar novo</span>
-                    <h1 class="title">Serviço</h1>
+                    <span class="subtitle" id="servico-subtitulo">Adicionar novo</span>
+                    <h1 class="title" id="servico-titulo">Serviço</h1>
                     </div>
-                <button class="close-btn" aria-label="Fechar formulário">
+                <button class="close-btn" aria-label="Fechar formulário" onclick="window.location.href='index.html'">
                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -22,7 +22,7 @@
                 </button>
             </header>
 
-            <form class="servico-form">
+            <form class="servico-form" id="servico-form">
                 <div class="form-group">
                     <label for="descricao" class="label">Descrição do Serviço:</label>
                     <textarea id="descricao" name="descricao" class="input-field textarea-field" placeholder="Detalhes do serviço a ser realizado"></textarea>
@@ -50,8 +50,14 @@
                 </div>
 
                 <button type="submit" class="submit-btn">Salvar Serviço</button>
-                </form>
+            </form>
+            
+            <div id="servico-info" style="display: none; padding: 10px 20px;">
+                </div>
+
         </div>
     </div>
+
+    <script src="servico.js" defer></script>
 </body>
 </html>
