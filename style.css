@@ -1,0 +1,131 @@
+/* Variáveis para cores */
+:root {
+    --bg-color: #6d6d6d; /* Cinza de fundo principal (aproximado) */
+    --card-bg-color: #e0e0e0; /* Cinza claro dos cartões (aproximado) */
+    --header-bg-color: #e57373; /* Vermelho claro do cabeçalho/logo (aproximado) */
+    --button-bg-color: #4CAF50; /* Verde do botão (aproximado) */
+    --text-color-dark: #333;
+    --text-color-white: white;
+    --icon-color-dark: #333; /* Cor dos ícones (lápis e lixeira) */
+}
+
+/* Reset básico e estilo de corpo */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha o conteúdo ao topo do contêiner */
+    min-height: 100vh;
+    padding-top: 50px; /* Espaçamento do topo */
+}
+
+.container {
+    width: 100%;
+    max-width: 600px; /* Largura base do layout (ajustável) */
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os blocos (header, botão, lista) */
+}
+
+/* Estilo do cabeçalho/logo */
+.header {
+    background-color: var(--header-bg-color);
+    height: 150px; /* Altura aproximada baseada na imagem */
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-color-dark); /* Cor do texto "LOGO" */
+}
+
+/* Estilo do botão "Novo Cadastro" */
+.new-registration-btn {
+    background-color: var(--button-bg-color);
+    color: var(--text-color-white);
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
+}
+
+.new-registration-btn:hover {
+    background-color: #45a049; /* Um tom de verde um pouco mais escuro ao passar o mouse */
+}
+
+/* Estilo da lista de usuários */
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os cartões de usuário */
+}
+
+/* Estilo do cartão de usuário */
+.user-card {
+    background-color: var(--card-bg-color);
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar o cartão */
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: var(--text-color-dark);
+}
+
+.user-id {
+    font-size: 0.9em;
+    color: var(--text-color-dark);
+    opacity: 0.7;
+    margin-top: 5px;
+}
+
+/* Estilo dos botões de ação (editar/excluir) */
+.user-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: var(--icon-color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s, transform 0.2s;
+}
+
+.action-btn:hover {
+    opacity: 0.7;
+    transform: scale(1.1);
+}
+
+.action-btn svg {
+    stroke: var(--icon-color-dark); /* Garante que o ícone usa a cor correta */
+}
