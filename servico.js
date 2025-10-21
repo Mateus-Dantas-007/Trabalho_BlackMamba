@@ -1,18 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // 1. Pega o CPF que foi salvo na sessão
+    // 1. Pega o CPF e o MODO da sessão
     const cpfCliente = sessionStorage.getItem('cpfClienteParaServico');
+    const modo = sessionStorage.getItem('modoServico');
+    
+    // 2. Limpa a flag de modo para não afetar a próxima visita
+    sessionStorage.removeItem('modoServico');
+
     if (!cpfCliente) {
-        // Se não achar o CPF, volta para a index
         alert('Erro: Cliente não identificado.');
         window.location.href = 'index.html';
         return;
     }
 
-    // 2. Carrega todos os clientes
     let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-    
-    // 3. Encontra o cliente específico
     const cliente = clientes.find(c => c.cpf === cpfCliente);
 
     if (!cliente) {
@@ -21,28 +22,23 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // 4. Seleciona os elementos da página
     const form = document.getElementById('servico-form');
     const infoDiv = document.getElementById('servico-info');
     const titulo = document.getElementById('servico-titulo');
     const subtitulo = document.getElementById('servico-subtitulo');
 
-    // 5. MUDANÇA DE LÓGICA: Verifica se o cliente JÁ TEM um serviço
-    if (cliente.servico) {
-        // --- SE JÁ TEM SERVIÇO: MODO VISUALIZAÇÃO ---
+    // 3. NOVA LÓGICA PRINCIPAL
+    
+    // CASO 1: Cliente tem serviço E NÃO estamos em modo de edição (MODO VISUALIZAÇÃO)
+    if (cliente.servico && modo !== 'editar') {
         
-        // Esconde o formulário
         form.style.display = 'none';
-
-        // Preenche o título
         titulo.textContent = 'Detalhes do Serviço';
-        subtitulo.textContent = cliente.nome; // Mostra o nome do cliente
+        subtitulo.textContent = cliente.nome; 
 
-        // Formata os dados para exibição
         const valorFormatado = parseFloat(cliente.servico.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         const dataFormatada = new Date(cliente.servico.data_conclusao + 'T00:00:00').toLocaleDateString('pt-BR');
 
-        // Mostra os dados na Div
         infoDiv.innerHTML = `
             <p><strong>Descrição:</strong><br> ${cliente.servico.descricao}</p>
             <p><strong>Valor:</strong> ${valorFormatado}</p>
@@ -51,16 +47,37 @@ document.addEventListener('DOMContentLoaded', function() {
             <br>
             <button onclick="window.location.href='index.html'" class="submit-btn">Voltar</button>
         `;
-        infoDiv.style.display = 'block'; // Mostra a div
+        infoDiv.style.display = 'block'; 
 
     } else {
-        // --- SE NÃO TEM SERVIÇO: MODO CADASTRO ---
+        // CASO 2: Cliente NÃO tem serviço OU estamos em modo de edição (MODO FORMULÁRIO)
+        
+        infoDiv.style.display = 'none'; // Garante que a div de infos está escondida
+        form.style.display = 'block'; // Garante que o form está visível
 
-        // O formulário já está visível, então só adicionamos o 'submit'
+        // Se for modo de edição, preenche o formulário com dados existentes
+        if (cliente.servico && modo === 'editar') {
+            titulo.textContent = 'Editar Serviço';
+            subtitulo.textContent = cliente.nome;
+            form.querySelector('.submit-btn').textContent = 'Atualizar Serviço';
+            
+            // Preenche os campos
+            document.getElementById('descricao').value = cliente.servico.descricao;
+            document.getElementById('valor').value = cliente.servico.valor;
+            document.getElementById('status').value = cliente.servico.status;
+            document.getElementById('data_conclusao').value = cliente.servico.data_conclusao;
+
+        } else {
+            // Modo "Adicionar Novo"
+            titulo.textContent = 'Adicionar Serviço';
+            subtitulo.textContent = cliente.nome;
+            // O botão já diz "Salvar Serviço" por padrão
+        }
+
+        // A lógica de SALVAR é a mesma para ADICIONAR e EDITAR
         form.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            // Pega os dados do formulário
             const novoServico = {
                 descricao: document.getElementById('descricao').value,
                 valor: document.getElementById('valor').value,
@@ -68,16 +85,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 data_conclusao: document.getElementById('data_conclusao').value,
             };
 
-            // Encontra o ÍNDICE do cliente no array
             const clienteIndex = clientes.findIndex(c => c.cpf === cpfCliente);
 
-            // Adiciona o objeto 'servico' dentro do objeto 'cliente'
-            clientes[clienteIndex].servico = novoServico;
+            // Isso aqui sobrescreve o serviço antigo ou cria um novo
+            clientes[clienteIndex].servico = novoServico; 
 
-            // Salva o array de CLIENTES (agora modificado) de volta
             localStorage.setItem('clientes', JSON.stringify(clientes));
 
-            // Volta para a página inicial
             alert('Serviço salvo com sucesso!');
             window.location.href = 'index.html';
         });

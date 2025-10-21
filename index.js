@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const link = document.createElement('a');
             link.href = 'servico.html'; 
-            
-            // NOVO: Adiciona um 'ouvinte' ao link
+
             link.addEventListener('click', function() {
-                // Salva o CPF deste cliente na sessão para a próxima página saber
                 sessionStorage.setItem('cpfClienteParaServico', cliente.cpf);
+                // Limpa a flag de 'modo' para garantir que é modo de visualização/novo
+                sessionStorage.removeItem('modoServico'); 
             });
 
             link.innerHTML = `
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="user-id">${cliente.cpf}</span>
                     </div>
                     <div class="user-actions">
-                        <button class="action-btn edit-btn" aria-label="Editar">
+                        <button class="action-btn edit-btn" aria-label="Editar" data-cpf="${cliente.cpf}">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                             </svg>
@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         adicionarLogicaDeExclusao();
+        adicionarLogicaDeEdicao(); // <-- NOVA FUNÇÃO CHAMADA
 
     } else {
         userListContainer.innerHTML = '<p style="color: black; text-align: center;">Nenhum cliente cadastrado ainda.</p>';
@@ -87,6 +88,34 @@ function adicionarLogicaDeExclusao() {
                 localStorage.setItem('clientes', JSON.stringify(novosClientes));
                 window.location.reload();
             }
+        });
+    });
+}
+
+// --- FUNÇÃO NOVA ---
+function adicionarLogicaDeEdicao() {
+
+    // 1. Seleciona TODOS os botões de editar
+    const editButtons = document.querySelectorAll('.edit-btn');
+
+    // 2. Adiciona um "ouvinte" para CADA botão
+    editButtons.forEach(button => {
+
+        button.addEventListener('click', function(event) {
+
+            // 3. Impede a navegação e a "borbulha"
+            event.preventDefault();
+            event.stopPropagation();
+
+            // 4. Pega o CPF do botão
+            const cpfParaEditar = event.currentTarget.dataset.cpf;
+            
+            // 5. Salva o CPF e o MODO na sessão
+            sessionStorage.setItem('cpfClienteParaServico', cpfParaEditar);
+            sessionStorage.setItem('modoServico', 'editar'); // <-- A FLAG!
+
+            // 6. Navega para a página de serviço
+            window.location.href = 'servico.html';
         });
     });
 }
