@@ -1,27 +1,17 @@
-// Espera o HTML da página carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
 
-    // 1. Busca a lista de clientes do localStorage
     const clientes = JSON.parse(localStorage.getItem('clientes'));
-
-    // 2. Seleciona o container onde os cards serão inseridos
     const userListContainer = document.getElementById('user-list-container');
 
-    // 3. Limpa qualquer conteúdo estático que possa estar dentro
     userListContainer.innerHTML = ''; 
 
-    // 4. Verifica se a lista de clientes existe e tem itens
     if (clientes && clientes.length > 0) {
         
-        // 5. Para cada cliente na lista, cria o HTML do card
         clientes.forEach(cliente => {
             
-            // Cria um elemento 'a' (link)
             const link = document.createElement('a');
-            link.href = 'servico.html'; // Link para a página de serviço
+            link.href = 'servico.html'; 
 
-            // Cria o HTML interno do card usando os dados do cliente
-            // (Copiei a estrutura exata do seu HTML)
             link.innerHTML = `
                 <div class="user-card">
                     <div class="user-info">
@@ -34,12 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                             </svg>
                         </button>
-                        <button class="action-btn delete-btn" aria-label="Excluir">
+
+                        <button class="action-btn delete-btn" aria-label="Excluir" data-cpf="${cliente.cpf}">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="3 6 5 6 21 6"></polyline>
                                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                             </svg>
                         </button>
+                        
                         <button class="action-btn paper-bnt">
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
                                 <g clip-path="url(#clip0_22_172)">
@@ -56,12 +48,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             
-            // 6. Adiciona o link (com o card dentro) ao container
             userListContainer.appendChild(link);
         });
 
+        adicionarLogicaDeExclusao();
+
     } else {
-        // 7. Se não houver clientes, mostra uma mensagem simples
-        userListContainer.innerHTML = '<p style="color: white; text-align: center;">Nenhum cliente cadastrado ainda.</p>';
+        userListContainer.innerHTML = '<p style="color: black; text-align: center;">Nenhum cliente cadastrado ainda.</p>';
     }
 });
+
+
+function adicionarLogicaDeExclusao() {
+    
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(button => {
+        
+        button.addEventListener('click', function(event) {
+            
+            event.preventDefault(); 
+            event.stopPropagation(); 
+
+            const confirmou = confirm('Tem certeza que deseja excluir este cliente?');
+
+            if (confirmou) {
+                
+                const cpfParaDeletar = event.currentTarget.dataset.cpf;
+                
+                let clientesAtuais = JSON.parse(localStorage.getItem('clientes')) || [];
+                
+                let novosClientes = clientesAtuais.filter(cliente => cliente.cpf !== cpfParaDeletar);
+                
+                localStorage.setItem('clientes', JSON.stringify(novosClientes));
+                
+                window.location.reload();
+            }
+        });
+    });
+}
